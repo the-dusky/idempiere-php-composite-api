@@ -1,8 +1,8 @@
 <?
 
-    namespace IdempierePHPWSWrapper;
+    namespace IdempierePHPCompositeAPI;
 
-    class IdApi {
+    class IDAPI {
 
         private $request;
         private $response;
