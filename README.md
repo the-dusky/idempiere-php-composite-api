@@ -1,4 +1,4 @@
-IdempierePHPWSWrapper
+idempiere-php-composite-api
 =====================
 
 A php wrapper for the composite api in Idempiere
@@ -10,11 +10,11 @@ To install use composer
 To use:
 
 ```php
-    use IdempierePHPWSWrapper\IdApi.php;
+    use IdempierePHPCompositeAPI\IDAPI.php;
 
-    IdApi::build_request($json);
+    IDAPI::build_request($json);
 
-    $response = IdApi::request();
+    $response = IDAPI::request();
 
     $response = json_decode($response, true);
 ```
