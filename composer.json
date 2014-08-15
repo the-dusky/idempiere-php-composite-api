@@ -1,0 +1,15 @@
+{
+    "name": "the-dusky/idempiere-php-ws-wrapper",
+    "description": "A php wrapper for the composite api in Idempiere",
+    "license": "The MIT License (MIT)",
+    "authors": [
+        {
+            "name": "Sandy Corsillo",
+            "email": "sandycorsillo@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+
+    }
+}
