@@ -7,6 +7,7 @@ request_params can be sent in as json or an associative php array.
 
 example json:
 
+```json
 {
     "settings" : {
         "urlEndpoint" : "",
@@ -43,3 +44,4 @@ example json:
         }
     ]
 }
+```
