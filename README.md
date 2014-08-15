@@ -1,5 +1,5 @@
-idempiere-php-ws-wrapper
-========================
+IdempierePHPWSWrapper
+=====================
 
 A php wrapper for the composite api in Idempiere
 
