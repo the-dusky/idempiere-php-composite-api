@@ -101,7 +101,7 @@
                     $this->request .= '<_0:operation preCommit="' . $request['preCommit'] . '" postCommit="' . $request['postCommit'] . '">';
                         $this->request .= '<_0:TargetPort>setDocAction</_0:TargetPort>';
                         $this->request .= '<_0:ModelSetDocAction>';
-                            $this->request .= '<_0:serviceType>' . $request['service_name'] . '</_0:serviceType>';
+                            $this->request .= '<_0:serviceType>' . $request['serviceName'] . '</_0:serviceType>';
                             $this->request .= '<_0:tableName>' . $request['table'] . '</_0:tableName>';
                             $this->request .= '<_0:recordID>' . '0' . '</_0:recordID>';
                             $this->request .= '<_0:recordIDVariable>@' . $request['id_column'] . '</_0:recordIDVariable>';
