@@ -5,6 +5,20 @@ A php wrapper for the composite api in Idempiere
 
 request_params can be sent in as json or an associative php array.
 
+To install use composer
+
+To use:
+
+```php
+use idempiere-php-ws-wrapper\IdApi.php
+
+IdApi::build_request($json);
+
+$response = IdApi::request();
+
+$response = json_decode($response, true);
+```
+
 example json:
 
 ```json
