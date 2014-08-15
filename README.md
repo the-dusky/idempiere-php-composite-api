@@ -10,7 +10,7 @@ To install use composer
 To use:
 
 ```php
-use idempiere-php-ws-wrapper\IdApi.php
+use IdempierePHPWSWrapper\IdApi.php
 
 IdApi::build_request($json);
 
