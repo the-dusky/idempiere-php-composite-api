@@ -25,12 +25,59 @@ example json:
             "type" : "createUpdateData",
             "preCommit" : "false",
             "postCommit" : "false",
-            "serviceName" : "createBPartner",
+            "serviceName" : "createBPartner1_0",
             "table" : "c_bpartner",
+            "action" : "CreateUpdate",
             "values" : {
-                "X" : "Y"
+                "Name" : "Nicholas Miede",
+                "email" : "nickmiede@gmail.com",
+                "TaxID" : "",
+                "IsVendor" : "N",
+                "IsCustomer" : "Y",
+                "IsTaxExempt" : "N",
+                "C_BP_Group_ID" : "104",
+                "PO_PriceList_ID" : "101"
             }
         },
+        {
+            "type" : "createUpdateData",
+            "preCommit" : "true",
+            "postCommit" : "false",
+            "serviceName" : "CreateUpdateUser",
+            "table" : "AD_User",
+            "action" : "CreateUpdate",
+            "values" : {
+                "Name" : "Nicholas Miede",
+                "Email" : "nickmiede@gmail.com",
+                "C_BPartner_ID" : "@C_BPartner.C_BPartner_ID",
+                "Phone" : ""
+            }
+        },
+        {
+            "type" : "createUpdateData",
+            "preCommit" : "false",
+            "postCommit" : "false",
+            "serviceName" : "CreateUpdateLocation",
+            "table" : "C_Location",
+            "action" : "CreateUpdate",
+            "values" : {
+                "Address1" : "3 Rimrock",
+                "Address2" : "",
+                "lookup" : [
+                    {
+                        "id" : "C_Region_ID",
+                        "value" : "CA"
+                    },
+                    {
+                        "id" : "C_Country_ID",
+                         "value" : "United States"
+                    }
+                ],
+                "RegionName" : "CA",
+                "Postal" : "92603-3604",
+                "City" : "Irvine"
+            }
+        }
         {
             "type" : "setDocAction",
             "preCommit" : "",

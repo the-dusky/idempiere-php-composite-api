@@ -1,5 +1,6 @@
 <?
 
+
     class IdApi {
 
         private $request;
@@ -85,7 +86,9 @@
                             $this->request .= '<_0:DataRow>';
                                 foreach($request['params'] as $key => $value) {
                                     if($key == 'lookup') {
-                                        $this->request .= '<_0:field column="' . $value['id'] . '" lval="' . $value['value'] . '"/>';
+                                        foreach($value as $lookup_req) {
+                                            $this->request .= '<_0:field column="' . $lookup_req['id'] . '" lval="' . $lookup_req['value'] . '"/>';
+                                        }
                                     } else {
                                         $this->request .= '<_0:field column="' . $key . '">';
                                             $this->request .= '<_0:val>' . $value . '</_0:val>';
@@ -101,7 +104,7 @@
                         $this->request .= '<_0:ModelSetDocAction>';
                             $this->request .= '<_0:serviceType>' . $request['service_name'] . '</_0:serviceType>';
                             $this->request .= '<_0:tableName>' . $request['table'] . '</_0:tableName>';
-                            $this->request .= '<_0:recordID>0</_0:recordID>';
+                            $this->request .= '<_0:recordID>' . '0' . '</_0:recordID>';
                             $this->request .= '<_0:recordIDVariable>@' . $request['id_column'] . '</_0:recordIDVariable>';
                             $this->request .= '<_0:docAction>' . $request['action'] . '</_0:docAction>';
                         $this->request .= '</_0:ModelSetDocAction>';
