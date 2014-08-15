@@ -1,5 +1,5 @@
-php_idempiere_composite_api
-===========================
+IdempiereJSONWebServiceWrapper
+==============================
 
 A php wrapper for the composite api in Idempiere
 
@@ -9,7 +9,7 @@ example json:
 
 ```json
 {
-    "settings" : {
+    "params" : {
         "urlEndpoint" : "",
         "user" : "**Username**",
         "password" : "**Password**",
@@ -27,7 +27,7 @@ example json:
             "postCommit" : "false",
             "serviceName" : "createBPartner",
             "table" : "c_bpartner",
-            "keyValPairs" : {
+            "values" : {
                 "X" : "Y"
             }
         },
@@ -37,7 +37,7 @@ example json:
             "postCommit" : "",
             "serviceName" : "",
             "table" : "",
-            "keyValPairs" : {
+            "values" : {
                 "idColumn" : "Y",
                 "action" : "CO"
             }

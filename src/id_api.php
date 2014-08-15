@@ -2,7 +2,6 @@
 
     class IdApi {
 
-        private $request_array;
         private $request;
         private $response;
         private $request_params;
