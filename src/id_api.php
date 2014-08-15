@@ -50,10 +50,6 @@
             $this->build_request_footer();
         }
 
-        public function set_request_params_settings_defaults() {
-            if(isset())
-        }
-
         public function build_request_head() {
             $this->request .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:_0="http://idempiere.org/ADInterface/1_0"><soapenv:Header/>';
                 $this->request .= '<soapenv:Body>';
