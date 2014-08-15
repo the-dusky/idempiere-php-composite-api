@@ -46,8 +46,6 @@
 
             $this->request_params = $request_params;
 
-            $this->set_request_params_settings_defaults();
-
             $this->build_request_head();
 
             $this->build_request_body();
@@ -64,7 +62,7 @@
                                     $this->request .= '<_0:user>' .  $this->request_params['settings']['user'] . '</_0:user>';
                                     $this->request .= '<_0:pass>' .  $this->request_params['settings']['password'] . '</_0:pass>';
                                     $this->request .= '<_0:lang>' .  $this->request_params['settings']['language'] . '</_0:lang>';
-                                    $this->request .= '<_0:ClientID>' .  $this->request_params['settings']['client'] . '</_0:ClientID>';
+                                    $this->request .= '<_0:ClientID>' .  $this->request_params['settings']['clientId'] . '</_0:ClientID>';
                                     $this->request .= '<_0:RoleID>' .  $this->request_params['settings']['roleId'] . '</_0:RoleID>';
                                     $this->request .= '<_0:OrgID>' .  $this->request_params['settings']['orgId'] . '</_0:OrgID>';
                                     $this->request .= '<_0:WarehouseID>' .  $this->request_params['settings']['warehouseId'] . '</_0:WarehouseID>';
@@ -77,7 +75,7 @@
         public function build_request_body() {
             foreach($this->request_params['call'] as $request) {
                 if($request['type'] == 'createUpdateData'){
-                    $this->request .= '<_0:operation preCommit="' . $request['preCommit'] . '" postCommit="' . $request['posCommit'] . '">';
+                    $this->request .= '<_0:operation preCommit="' . $request['preCommit'] . '" postCommit="' . $request['postCommit'] . '">';
                         $this->request .= '<_0:TargetPort>createUpdateData</_0:TargetPort>';
                         $this->request .= '<_0:ModelCRUD>';
                             $this->request .= '<_0:serviceType>' . $request['serviceName'] . '</_0:serviceType>';
@@ -85,7 +83,7 @@
                             $this->request .= '<_0:RecordID>0</_0:RecordID>';
                             $this->request .= '<_0:Action>CreateUpdate</_0:Action>';
                             $this->request .= '<_0:DataRow>';
-                                foreach($request['params'] as $key => $value) {
+                                foreach($request['values'] as $key => $value) {
                                     if($key == 'lookup') {
                                         foreach($value as $lookup_req) {
                                             $this->request .= '<_0:field column="' . $lookup_req['id'] . '" lval="' . $lookup_req['value'] . '"/>';
