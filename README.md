@@ -30,7 +30,6 @@ example json:
                 "X" : "Y"
             }
         },
-
         {
             "type" : "setDocAction",
             "preCommit" : "",
