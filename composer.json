@@ -14,7 +14,7 @@
     },
     "autoload" : {
         "psr-0": {
-            "idempiere-php-ws-wrapper": "src/"
+            "IdempierePHPWSWrapper": "src/"
         }
     }
 }
