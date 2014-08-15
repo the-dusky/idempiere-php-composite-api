@@ -13,6 +13,10 @@
             $this->response = '';
         }
 
+        public function test() {
+            echo "IT WORKS";
+        }
+
         public function get_request() {
             return $this->request;
         }
