@@ -7,13 +7,14 @@ request_params can be sent in as json or an associative php array.
 
 To install use composer:
 
+```shell
 composer require the-dusky/idempiere-php-composite-api
 
 composer install
 
 To use:
 
-```php
+```PHP
     use  IdempierePhpCompositeApi\IdApi;
 
     $IdApi = new IdApi();
@@ -29,7 +30,7 @@ To use:
 
 example json:
 
-```json
+```JSON
 {
     "settings" : {
         "urlEndpoint": "",
