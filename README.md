@@ -5,18 +5,26 @@ A php wrapper for the composite api in Idempiere
 
 request_params can be sent in as json or an associative php array.
 
-To install use composer
+To install use composer:
+
+composer require the-dusky/idempiere-php-composite-api
+
+composer install
 
 To use:
 
 ```php
-    use IdempierePHPCompositeAPI\IDAPI.php;
+    use  IdempierePhpCompositeApi\IdApi;
 
-    IDAPI::build_request($json);
+    $IdApi = new IdApi();
 
-    $response = IDAPI::request();
+    $IdApi->build_request($json);
 
-    $response = json_decode($response, true);
+    $IdApi->build_request($additional_json, true);
+
+    $IdApi->make_request();
+
+    $response = json_decode($IdApi->get_response(), true);
 ```
 
 example json:
