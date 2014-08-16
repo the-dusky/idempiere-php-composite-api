@@ -23,85 +23,109 @@ example json:
 
 ```json
 {
-    "params" : {
-        "urlEndpoint" : "",
-        "user" : "**Username**",
-        "password" : "**Password**",
-        "language" : "en_US",
-        "clientId" : "11",
-        "roleId" : "50004",
-        "orgId" : "11",
-        "warehouseId" : "103",
-        "stage" : "9"
+    "settings" : {
+        "urlEndpoint": "",
+        "user": "**Username**",
+        "password": "**Password**",
+        "language": "en_US",
+        "clientId": "11",
+        "roleId": "50004",
+        "orgId": "11",
+        "warehouseId": "103",
+        "stage": "9"
     },
     "call" : [
         {
-            "type" : "createUpdateData",
-            "preCommit" : "false",
-            "postCommit" : "false",
-            "serviceName" : "createBPartner1_0",
-            "table" : "c_bpartner",
-            "action" : "CreateUpdate",
+            "type": "createUpdateData",
+            "preCommit": "false",
+            "postCommit": "false",
+            "serviceName": "createBPartner1_0",
+            "table": "c_bpartner",
+            "action": "CreateUpdate",
             "values" : {
-                "Name" : "Nicholas Miede",
-                "email" : "nickmiede@gmail.com",
-                "TaxID" : "",
-                "IsVendor" : "N",
-                "IsCustomer" : "Y",
-                "IsTaxExempt" : "N",
-                "C_BP_Group_ID" : "104",
-                "PO_PriceList_ID" : "101"
+                "Name": "Joe Schmoe",
+                "email": "joeschmoe@example.com",
+                "TaxID": "",
+                "IsVendor": "N",
+                "IsCustomer": "Y",
+                "IsTaxExempt": "N",
+                "C_BP_Group_ID": "104",
+                "PO_PriceList_ID": "101"
             }
         },
         {
-            "type" : "createUpdateData",
-            "preCommit" : "true",
-            "postCommit" : "false",
-            "serviceName" : "CreateUpdateUser",
-            "table" : "AD_User",
-            "action" : "CreateUpdate",
+            "type": "createUpdateData",
+            "preCommit": "true",
+            "postCommit": "false",
+            "serviceName": "CreateUpdateUser",
+            "table": "AD_User",
+            "action": "CreateUpdate",
             "values" : {
-                "Name" : "Nicholas Miede",
-                "Email" : "nickmiede@gmail.com",
-                "C_BPartner_ID" : "@C_BPartner.C_BPartner_ID",
-                "Phone" : ""
+                "C_BPartner_ID": "@C_BPartner.C_BPartner_ID",
+                "Email": "joeschmoe@example.com",
+                "C_BPartner_Location_ID": "@C_BPartner_Location.C_BPartner_Location_ID"
             }
         },
         {
-            "type" : "createUpdateData",
-            "preCommit" : "false",
-            "postCommit" : "false",
-            "serviceName" : "CreateUpdateLocation",
-            "table" : "C_Location",
-            "action" : "CreateUpdate",
+            "type": "createUpdateData",
+            "preCommit": "false",
+            "postCommit": "false",
+            "serviceName": "CreateUpdateLocation",
+            "table": "C_Location",
+            "action": "CreateUpdate",
             "values" : {
-                "Address1" : "3 Rimrock",
-                "Address2" : "",
+                "Address1": "123 Some Street",
+                "Address2": "",
                 "lookup" : [
                     {
-                        "id" : "C_Region_ID",
-                        "value" : "CA"
+                        "id": "C_Region_ID",
+                        "value": "CA"
                     },
                     {
-                        "id" : "C_Country_ID",
-                         "value" : "United States"
+                        "id": "C_Country_ID",
+                         "value": "United States"
                     }
                 ],
-                "RegionName" : "CA",
-                "Postal" : "92603-3604",
-                "City" : "Irvine"
+                "Postal": "90210",
+                "City": "Some Town"
             }
-        }
+        },
         {
-            "type" : "setDocAction",
-            "preCommit" : "",
-            "postCommit" : "",
-            "serviceName" : "",
-            "table" : "",
+            "type": "createUpdateData",
+            "preCommit": "false",
+            "postCommit": "false",
+            "serviceName": "CreateUpdateBPLocation",
+            "table": "C_BPartner_Location",
+            "action": "CreateUpdate",
             "values" : {
-                "idColumn" : "Y",
-                "action" : "CO"
+                "C_BPartner_ID": "@C_BPartner.C_BPartner_ID",
+                "C_Location_ID": "@C_Location.C_Location_ID",
+                "IsShipTo": "Y",
+                "IsBillTo": "Y",
             }
+        },
+        {
+            "type": "createUpdateData",
+            "preCommit": "false",
+            "postCommit": "false",
+            "serviceName": "CreateUpdateUser",
+            "table": "AD_User",
+            "action": "CreateUpdate",
+            "values" : {
+                "C_BPartner_ID": "@C_BPartner.C_BPartner_ID",
+                "C_Location_ID": "@C_Location.C_Location_ID",
+                "IsShipTo": "Y",
+                "IsBillTo": "Y",
+            }
+        },
+        {
+            "type": "setDocAction",
+            "preCommit": "",
+            "postCommit": "",
+            "serviceName": "",
+            "table": "",
+            "idColumn": "Y",
+            "action": "CO"
         }
     ]
 }
@@ -227,97 +251,6 @@ example json:
                             <_0:val>Y</_0:val>
                             </_0:field>
                             <_0:field column="IsBillTo">
-                            <_0:val>Y</_0:val>
-                            </_0:field>
-                        </_0:DataRow>
-                    </_0:ModelCRUD>
-                </_0:operation>
-                <_0:operation preCommit="false" postCommit="false">
-                    <_0:TargetPort>createUpdateData</_0:TargetPort>
-                    <_0:ModelCRUD>
-                        <_0:serviceType>CreateUpdateUser</_0:serviceType>
-                        <_0:TableName>AD_User</_0:TableName>
-                        <_0:RecordID>0</_0:RecordID>
-                        <_0:Action>CreateUpdate</_0:Action>
-                        <_0:DataRow>
-                            <_0:field column="C_BPartner_ID">
-                            <_0:val>@C_BPartner.C_BPartner_ID</_0:val>
-                            </_0:field>
-                            <_0:field column="EMail">
-                            <_0:val>nickmiede@gmail.com</_0:val>
-                            </_0:field>
-                            <_0:field column="C_BPartner_Location_ID">
-                            <_0:val>@C_BPartner_Location.C_BPartner_Location_ID</_0:val>
-                            </_0:field>
-                        </_0:DataRow>
-                    </_0:ModelCRUD>
-                </_0:operation>
-                <_0:operation preCommit="true" postCommit="false">
-                    <_0:TargetPort>createUpdateData</_0:TargetPort>
-                    <_0:ModelCRUD>
-                        <_0:serviceType>CreateUpdateUser</_0:serviceType>
-                        <_0:TableName>AD_User</_0:TableName>
-                        <_0:RecordID>0</_0:RecordID>
-                        <_0:Action>CreateUpdate</_0:Action>
-                        <_0:DataRow>
-                            <_0:field column="Name">
-                            <_0:val>Nicholas Miede</_0:val>
-                            </_0:field>
-                            <_0:field column="EMail">
-                            <_0:val>nickmiede@gmail.com</_0:val>
-                            </_0:field>
-                            <_0:field column="C_BPartner_ID">
-                            <_0:val>@C_BPartner.C_BPartner_ID</_0:val>
-                            </_0:field>
-                            <_0:field column="Phone">
-                            <_0:val></_0:val>
-                            </_0:field>
-                        </_0:DataRow>
-                    </_0:ModelCRUD>
-                </_0:operation>
-                <_0:operation preCommit="false" postCommit="false">
-                    <_0:TargetPort>createUpdateData</_0:TargetPort>
-                    <_0:ModelCRUD>
-                        <_0:serviceType>CreateUpdateLocation</_0:serviceType>
-                        <_0:TableName>C_Location</_0:TableName>
-                        <_0:RecordID>0</_0:RecordID>
-                        <_0:Action>CreateUpdate</_0:Action>
-                        <_0:DataRow>
-                            <_0:field column="C_Country_ID" lval="United States"/>
-                            <_0:field column="Address1">
-                                <_0:val>3 Rimrock</_0:val>
-                            </_0:field>
-                            <_0:field column="Address2">
-                                <_0:val></_0:val>
-                            </_0:field>
-                            <_0:field column="C_Region_ID" lval="CA"/>
-                            <_0:field column="RegionName">
-                            <_0:val>CA</_0:val>
-                            </_0:field>
-                            <_0:field column="Postal">
-                            <_0:val>92603-3604</_0:val>
-                            </_0:field>
-                            <_0:field column="City">
-                            <_0:val>Irvine</_0:val>
-                            </_0:field>
-                        </_0:DataRow>
-                    </_0:ModelCRUD>
-                </_0:operation>
-                <_0:operation preCommit="false" postCommit="false">
-                    <_0:TargetPort>createUpdateData</_0:TargetPort>
-                    <_0:ModelCRUD>
-                        <_0:serviceType>CreateUpdateBPLocation</_0:serviceType>
-                        <_0:TableName>C_BPartner_Location</_0:TableName>
-                        <_0:RecordID>0</_0:RecordID>
-                        <_0:Action>CreateUpdate</_0:Action>
-                        <_0:DataRow>
-                            <_0:field column="C_BPartner_ID">
-                            <_0:val>@C_BPartner.C_BPartner_ID</_0:val>
-                            </_0:field>
-                            <_0:field column="C_Location_ID">
-                            <_0:val>@C_Location.C_Location_ID</_0:val>
-                            </_0:field>
-                            <_0:field column="IsShipTo">
                             <_0:val>Y</_0:val>
                             </_0:field>
                         </_0:DataRow>
