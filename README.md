@@ -11,6 +11,7 @@ To install use composer:
 composer require the-dusky/idempiere-php-composite-api
 
 composer install
+```
 
 To use:
 
