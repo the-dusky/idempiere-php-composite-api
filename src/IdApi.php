@@ -25,7 +25,12 @@
             return $this->response;
         }
 
-        public function request() {
+        public function get_request_params() {
+            return $this->request_params;
+        }
+
+        public function make_request() {
+            $this->build_request_footer();
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL,               $this->request_params['settings']['urlEndpoint']);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT,    10);
@@ -38,23 +43,21 @@
             curl_close($ch);
         }
 
-        public function build_request($request_params) {
+        public function build_request($request_params, $append = false) {
 
             if(!is_array($request_params)) {
                 $request_params = json_decode($request_params, true);
             }
 
             $this->request_params = $request_params;
-
-            $this->build_request_head();
-
+            if($append == false) {
+                $this->build_request_head();
+            }
             $this->build_request_body();
-
-            $this->build_request_footer();
         }
 
         public function build_request_head() {
-            $this->request .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:_0="http://idempiere.org/ADInterface/1_0"><soapenv:Header/>';
+            $this->request = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:_0="http://idempiere.org/ADInterface/1_0"><soapenv:Header/>';
                 $this->request .= '<soapenv:Body>';
                     $this->request .= '<_0:compositeOperation>';
                         $this->request .= '<_0:CompositeRequest>';
