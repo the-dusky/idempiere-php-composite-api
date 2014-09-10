@@ -77,14 +77,45 @@
 
         public function build_request_body() {
             foreach($this->request_params['call'] as $request) {
-                if($request['type'] == 'createUpdateData'){
+                if($request['type'] == 'setDocAction') {
                     $this->request .= '<_0:operation preCommit="' . $request['preCommit'] . '" postCommit="' . $request['postCommit'] . '">';
-                        $this->request .= '<_0:TargetPort>createUpdateData</_0:TargetPort>';
+                    $this->request .= '<_0:TargetPort>setDocAction</_0:TargetPort>';
+                    $this->request .= '<_0:ModelSetDocAction>';
+                        $this->request .= '<_0:serviceType>' . $request['serviceName'] . '</_0:serviceType>';
+                        $this->request .= '<_0:tableName>' . $request['table'] . '</_0:tableName>';
+                        $this->request .= '<_0:recordID>' . '0' . '</_0:recordID>';
+                        $this->request .= '<_0:recordIDVariable>@' . $request['table'] . "." . $request['idColumn'] . '</_0:recordIDVariable>';
+                        $this->request .= '<_0:docAction>' . $request['action'] . '</_0:docAction>';
+                    $this->request .= '</_0:ModelSetDocAction>';
+                    $this->request .= '</_0:operation>';
+                } elseif($request['type'] == 'runProcess') {
+                    $this->request .= '<_0:operation preCommit="' . $request['preCommit'] . '" postCommit="' . $request['postCommit'] . '">';
+                        $this->request .= '<_0:TargetPort>runProcess</_0:TargetPort>';
+                        $this->request .= '<_0:ModelRunProcess>';
+                        $this->request .= '<_0:serviceType>' . $request['serviceName'] . '</_0:serviceType>';
+                        $this->request .= '<_0:ParamValues>';
+                            foreach($request['values'] as $key => $value) {
+                                if($key == 'lookup') {
+                                    foreach($value as $lookup_req) {
+                                        $this->request .= '<_0:field column="' . $lookup_req['id'] . '" lval="' . $lookup_req['value'] . '"/>';
+                                    }
+                                } else {
+                                    $this->request .= '<_0:field column="' . $key . '">';
+                                    $this->request .= '<_0:val>' . $value . '</_0:val>';
+                                    $this->request .= '</_0:field>';
+                                }
+                            }
+                        $this->request .= '</_0:ParamValues>';
+                        $this->request .= '</_0:ModelRunProcess>';
+                    $this->request .= '</_0:operation>';
+                } else {
+                    $this->request .= '<_0:operation preCommit="' . $request['preCommit'] . '" postCommit="' . $request['postCommit'] . '">';
+                        $this->request .= '<_0:TargetPort>' . $request['type'] . '</_0:TargetPort>';
                         $this->request .= '<_0:ModelCRUD>';
                             $this->request .= '<_0:serviceType>' . $request['serviceName'] . '</_0:serviceType>';
                             $this->request .= '<_0:TableName>' . $request['table'] . '</_0:TableName>';
                             $this->request .= '<_0:RecordID>0</_0:RecordID>';
-                            $this->request .= '<_0:Action>CreateUpdate</_0:Action>';
+                            $this->request .= '<_0:Action>' . $request['action'] . '</_0:Action>';
                             $this->request .= '<_0:DataRow>';
                                 foreach($request['values'] as $key => $value) {
                                     if($key == 'lookup') {
@@ -99,17 +130,6 @@
                                 }
                             $this->request .= '</_0:DataRow>';
                         $this->request .= '</_0:ModelCRUD>';
-                    $this->request .= '</_0:operation>';
-                } elseif($request['type'] == 'setDocAction') {
-                    $this->request .= '<_0:operation preCommit="' . $request['preCommit'] . '" postCommit="' . $request['postCommit'] . '">';
-                        $this->request .= '<_0:TargetPort>setDocAction</_0:TargetPort>';
-                        $this->request .= '<_0:ModelSetDocAction>';
-                            $this->request .= '<_0:serviceType>' . $request['serviceName'] . '</_0:serviceType>';
-                            $this->request .= '<_0:tableName>' . $request['table'] . '</_0:tableName>';
-                            $this->request .= '<_0:recordID>' . '0' . '</_0:recordID>';
-                            $this->request .= '<_0:recordIDVariable>@' . $request['table'] . "." . $request['idColumn'] . '</_0:recordIDVariable>';
-                            $this->request .= '<_0:docAction>' . $request['action'] . '</_0:docAction>';
-                        $this->request .= '</_0:ModelSetDocAction>';
                     $this->request .= '</_0:operation>';
                 }
             }
