@@ -4,9 +4,13 @@
 
     class IdApi {
 
-        private $request;
-        private $response;
-        private $request_params;
+        private $json_request;
+        private $array_request;
+        private $xml_request;
+        private $xml_response;
+        private $array_response;
+        private $json_response;
+
 
         public function __construct() {
             $this->request = '';
@@ -17,39 +21,66 @@
             echo "IT WORKS";
         }
 
-        public function get_request() {
-            return $this->request;
+        public function get_json_request() {
+            return $this->json_request;
         }
 
-        public function get_response() {
-            return $this->response;
+        public function get_array_request() {
+            return $this->array_request;
         }
 
-        public function get_request_params() {
-            return $this->request_params;
+        public function get_xml_request() {
+            return $this->xml_request;
+        }
+
+        public function get_xml_response() {
+            return $this->xml_response;
+        }
+
+        public function get_array_response() {
+            return $this->array_response;
+        }
+
+        public function get_json_response() {
+            return $this->json_response;
         }
 
         public function make_request() {
             $this->build_request_footer();
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL,               $this->request_params['settings']['urlEndpoint']);
+            curl_setopt($ch, CURLOPT_URL,               $this->array_request['settings']['urlEndpoint']);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT,    10);
             curl_setopt($ch, CURLOPT_TIMEOUT,           10);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER,    true );
             curl_setopt($ch, CURLOPT_POST,              true );
             curl_setopt($ch, CURLOPT_FRESH_CONNECT,     TRUE);
-            curl_setopt($ch, CURLOPT_POSTFIELDS,        $this->request);
-            $this->response = curl_exec($ch);
+            curl_setopt($ch, CURLOPT_POSTFIELDS,        $this->xml_request);
+            $this->xml_response = curl_exec($ch);
             curl_close($ch);
         }
 
-        public function build_request($request_params, $append = false) {
+        public function parse_response() {
+            $xml = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $this->xml_response);
+            $ob = simplexml_load_string($xml);
+            $this->json_response = json_encode($ob);
+            $this->array_response = json_decode($this->json_response, true);
+            //$this->array_response = $this->array_response['soapBody']['ns1compositeOperationResponse']['CompositeResponses']['CompositeResponse'];
+            //$this->json_response = json_encode($this->array_response);
+        }
 
-            if(!is_array($request_params)) {
-                $request_params = json_decode($request_params, true);
+        public function validate_response() {
+            return true;
+        }
+
+        public function build_request($request, $append = false) {
+
+            if(!is_array($request)) {
+                $this->json_request = $request;
+                $this->array_request = json_decode($request, true);
+            } else {
+                $this->array_request = $request;
             }
 
-            $this->request_params = $request_params;
             if($append == false) {
                 $this->build_request_head();
             }
@@ -57,89 +88,89 @@
         }
 
         public function build_request_head() {
-            $this->request = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:_0="http://idempiere.org/ADInterface/1_0"><soapenv:Header/>';
-                $this->request .= '<soapenv:Body>';
-                    $this->request .= '<_0:compositeOperation>';
-                        $this->request .= '<_0:CompositeRequest>';
-                            $this->request .= '<_0:ADLoginRequest>';
-                                    $this->request .= '<_0:user>' .  $this->request_params['settings']['user'] . '</_0:user>';
-                                    $this->request .= '<_0:pass>' .  $this->request_params['settings']['password'] . '</_0:pass>';
-                                    $this->request .= '<_0:lang>' .  $this->request_params['settings']['language'] . '</_0:lang>';
-                                    $this->request .= '<_0:ClientID>' .  $this->request_params['settings']['clientId'] . '</_0:ClientID>';
-                                    $this->request .= '<_0:RoleID>' .  $this->request_params['settings']['roleId'] . '</_0:RoleID>';
-                                    $this->request .= '<_0:OrgID>' .  $this->request_params['settings']['orgId'] . '</_0:OrgID>';
-                                    $this->request .= '<_0:WarehouseID>' .  $this->request_params['settings']['warehouseId'] . '</_0:WarehouseID>';
-                                    $this->request .= '<_0:stage>' .  $this->request_params['settings']['stage'] . '</_0:stage>';
-                            $this->request .= '</_0:ADLoginRequest>';
-                            $this->request .= '<_0:serviceType>SyncOrder</_0:serviceType>';
-                            $this->request .= '<_0:operations>';
+            $this->xml_request = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:_0="http://idempiere.org/ADInterface/1_0"><soapenv:Header/>';
+                $this->xml_request .= '<soapenv:Body>';
+                    $this->xml_request .= '<_0:compositeOperation>';
+                        $this->xml_request .= '<_0:CompositeRequest>';
+                            $this->xml_request .= '<_0:ADLoginRequest>';
+                                    $this->xml_request .= '<_0:user>' .  $this->array_request['settings']['user'] . '</_0:user>';
+                                    $this->xml_request .= '<_0:pass>' .  $this->array_request['settings']['password'] . '</_0:pass>';
+                                    $this->xml_request .= '<_0:lang>' .  $this->array_request['settings']['language'] . '</_0:lang>';
+                                    $this->xml_request .= '<_0:ClientID>' .  $this->array_request['settings']['clientId'] . '</_0:ClientID>';
+                                    $this->xml_request .= '<_0:RoleID>' .  $this->array_request['settings']['roleId'] . '</_0:RoleID>';
+                                    $this->xml_request .= '<_0:OrgID>' .  $this->array_request['settings']['orgId'] . '</_0:OrgID>';
+                                    $this->xml_request .= '<_0:WarehouseID>' .  $this->array_request['settings']['warehouseId'] . '</_0:WarehouseID>';
+                                    $this->xml_request .= '<_0:stage>' .  $this->array_request['settings']['stage'] . '</_0:stage>';
+                            $this->xml_request .= '</_0:ADLoginRequest>';
+                            $this->xml_request .= '<_0:serviceType>SyncOrder</_0:serviceType>';
+                            $this->xml_request .= '<_0:operations>';
         }
 
         public function build_request_body() {
-            foreach($this->request_params['call'] as $request) {
+            foreach($this->array_request['call'] as $request) {
                 if($request['type'] == 'setDocAction') {
-                    $this->request .= '<_0:operation preCommit="' . $request['preCommit'] . '" postCommit="' . $request['postCommit'] . '">';
-                    $this->request .= '<_0:TargetPort>setDocAction</_0:TargetPort>';
-                    $this->request .= '<_0:ModelSetDocAction>';
-                        $this->request .= '<_0:serviceType>' . $request['serviceName'] . '</_0:serviceType>';
-                        $this->request .= '<_0:tableName>' . $request['table'] . '</_0:tableName>';
-                        $this->request .= '<_0:recordID>' . '0' . '</_0:recordID>';
-                        $this->request .= '<_0:recordIDVariable>@' . $request['table'] . "." . $request['idColumn'] . '</_0:recordIDVariable>';
-                        $this->request .= '<_0:docAction>' . $request['action'] . '</_0:docAction>';
-                    $this->request .= '</_0:ModelSetDocAction>';
-                    $this->request .= '</_0:operation>';
+                    $this->xml_request .= '<_0:operation preCommit="' . $request['preCommit'] . '" postCommit="' . $request['postCommit'] . '">';
+                    $this->xml_request .= '<_0:TargetPort>setDocAction</_0:TargetPort>';
+                    $this->xml_request .= '<_0:ModelSetDocAction>';
+                        $this->xml_request .= '<_0:serviceType>' . $request['serviceName'] . '</_0:serviceType>';
+                        $this->xml_request .= '<_0:tableName>' . $request['table'] . '</_0:tableName>';
+                        $this->xml_request .= '<_0:recordID>' . '0' . '</_0:recordID>';
+                        $this->xml_request .= '<_0:recordIDVariable>@' . $request['table'] . "." . $request['idColumn'] . '</_0:recordIDVariable>';
+                        $this->xml_request .= '<_0:docAction>' . $request['action'] . '</_0:docAction>';
+                    $this->xml_request .= '</_0:ModelSetDocAction>';
+                    $this->xml_request .= '</_0:operation>';
                 } elseif($request['type'] == 'runProcess') {
-                    $this->request .= '<_0:operation preCommit="' . $request['preCommit'] . '" postCommit="' . $request['postCommit'] . '">';
-                        $this->request .= '<_0:TargetPort>runProcess</_0:TargetPort>';
-                        $this->request .= '<_0:ModelRunProcess>';
-                        $this->request .= '<_0:serviceType>' . $request['serviceName'] . '</_0:serviceType>';
-                        $this->request .= '<_0:ParamValues>';
+                    $this->xml_request .= '<_0:operation preCommit="' . $request['preCommit'] . '" postCommit="' . $request['postCommit'] . '">';
+                        $this->xml_request .= '<_0:TargetPort>runProcess</_0:TargetPort>';
+                        $this->xml_request .= '<_0:ModelRunProcess>';
+                        $this->xml_request .= '<_0:serviceType>' . $request['serviceName'] . '</_0:serviceType>';
+                        $this->xml_request .= '<_0:ParamValues>';
                             foreach($request['values'] as $key => $value) {
                                 if($key == 'lookup') {
                                     foreach($value as $lookup_req) {
-                                        $this->request .= '<_0:field column="' . $lookup_req['id'] . '" lval="' . $lookup_req['value'] . '"/>';
+                                        $this->xml_request .= '<_0:field column="' . $lookup_req['id'] . '" lval="' . $lookup_req['value'] . '"/>';
                                     }
                                 } else {
-                                    $this->request .= '<_0:field column="' . $key . '">';
-                                    $this->request .= '<_0:val>' . $value . '</_0:val>';
-                                    $this->request .= '</_0:field>';
+                                    $this->xml_request .= '<_0:field column="' . $key . '">';
+                                    $this->xml_request .= '<_0:val>' . $value . '</_0:val>';
+                                    $this->xml_request .= '</_0:field>';
                                 }
                             }
-                        $this->request .= '</_0:ParamValues>';
-                        $this->request .= '</_0:ModelRunProcess>';
-                    $this->request .= '</_0:operation>';
+                        $this->xml_request .= '</_0:ParamValues>';
+                        $this->xml_request .= '</_0:ModelRunProcess>';
+                    $this->xml_request .= '</_0:operation>';
                 } else {
-                    $this->request .= '<_0:operation preCommit="' . $request['preCommit'] . '" postCommit="' . $request['postCommit'] . '">';
-                        $this->request .= '<_0:TargetPort>' . $request['type'] . '</_0:TargetPort>';
-                        $this->request .= '<_0:ModelCRUD>';
-                            $this->request .= '<_0:serviceType>' . $request['serviceName'] . '</_0:serviceType>';
-                            $this->request .= '<_0:TableName>' . $request['table'] . '</_0:TableName>';
-                            $this->request .= '<_0:RecordID>0</_0:RecordID>';
-                            $this->request .= '<_0:Action>' . $request['action'] . '</_0:Action>';
-                            $this->request .= '<_0:DataRow>';
+                    $this->xml_request .= '<_0:operation preCommit="' . $request['preCommit'] . '" postCommit="' . $request['postCommit'] . '">';
+                        $this->xml_request .= '<_0:TargetPort>' . $request['type'] . '</_0:TargetPort>';
+                        $this->xml_request .= '<_0:ModelCRUD>';
+                            $this->xml_request .= '<_0:serviceType>' . $request['serviceName'] . '</_0:serviceType>';
+                            $this->xml_request .= '<_0:TableName>' . $request['table'] . '</_0:TableName>';
+                            $this->xml_request .= '<_0:RecordID>0</_0:RecordID>';
+                            $this->xml_request .= '<_0:Action>' . $request['action'] . '</_0:Action>';
+                            $this->xml_request .= '<_0:DataRow>';
                                 foreach($request['values'] as $key => $value) {
                                     if($key == 'lookup') {
                                         foreach($value as $lookup_req) {
-                                            $this->request .= '<_0:field column="' . $lookup_req['id'] . '" lval="' . $lookup_req['value'] . '"/>';
+                                            $this->xml_request .= '<_0:field column="' . $lookup_req['id'] . '" lval="' . $lookup_req['value'] . '"/>';
                                         }
                                     } else {
-                                        $this->request .= '<_0:field column="' . $key . '">';
-                                            $this->request .= '<_0:val>' . $value . '</_0:val>';
-                                        $this->request .= '</_0:field>';
+                                        $this->xml_request .= '<_0:field column="' . $key . '">';
+                                            $this->xml_request .= '<_0:val>' . $value . '</_0:val>';
+                                        $this->xml_request .= '</_0:field>';
                                     }
                                 }
-                            $this->request .= '</_0:DataRow>';
-                        $this->request .= '</_0:ModelCRUD>';
-                    $this->request .= '</_0:operation>';
+                            $this->xml_request .= '</_0:DataRow>';
+                        $this->xml_request .= '</_0:ModelCRUD>';
+                    $this->xml_request .= '</_0:operation>';
                 }
             }
         }
 
         public function build_request_footer() {
-                            $this->request .= '</_0:operations>';
-                        $this->request .= '</_0:CompositeRequest>';
-                    $this->request .= '</_0:compositeOperation>';
-                $this->request .= '</soapenv:Body>';
-            $this->request .= '</soapenv:Envelope>';
+                            $this->xml_request .= '</_0:operations>';
+                        $this->xml_request .= '</_0:CompositeRequest>';
+                    $this->xml_request .= '</_0:compositeOperation>';
+                $this->xml_request .= '</soapenv:Body>';
+            $this->xml_request .= '</soapenv:Envelope>';
         }
     }
