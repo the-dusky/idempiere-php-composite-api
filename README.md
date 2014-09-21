@@ -63,111 +63,173 @@ example json:
 
 ```JSON
 {
-    "settings" : {
-        "urlEndpoint": "",
-        "user": "**Username**",
-        "password": "**Password**",
-        "language": "en_US",
-        "clientId": "11",
-        "roleId": "50004",
-        "orgId": "11",
-        "warehouseId": "103",
-        "stage": "9"
-    },
-    "call" : [
-        {
-            "type": "createUpdateData",
-            "preCommit": "false",
-            "postCommit": "false",
-            "serviceName": "createBPartner1_0",
-            "table": "c_bpartner",
-            "action": "CreateUpdate",
-            "values" : {
-                "Name": "Joe Schmoe",
-                "email": "joeschmoe@example.com",
-                "TaxID": "",
-                "IsVendor": "N",
-                "IsCustomer": "Y",
-                "IsTaxExempt": "N",
-                "C_BP_Group_ID": "104",
-                "PO_PriceList_ID": "101"
-            }
-        },
-        {
-            "type": "createUpdateData",
-            "preCommit": "true",
-            "postCommit": "false",
-            "serviceName": "CreateUpdateUser",
-            "table": "AD_User",
-            "action": "CreateUpdate",
-            "values" : {
-                "C_BPartner_ID": "@C_BPartner.C_BPartner_ID",
-                "Email": "joeschmoe@example.com",
-                "C_BPartner_Location_ID": "@C_BPartner_Location.C_BPartner_Location_ID"
-            }
-        },
-        {
-            "type": "createUpdateData",
-            "preCommit": "false",
-            "postCommit": "false",
-            "serviceName": "CreateUpdateLocation",
-            "table": "C_Location",
-            "action": "CreateUpdate",
-            "values" : {
-                "Address1": "123 Some Street",
-                "Address2": "",
-                "lookup" : [
-                    {
-                        "id": "C_Region_ID",
-                        "value": "CA"
-                    },
-                    {
-                        "id": "C_Country_ID",
-                         "value": "United States"
-                    }
-                ],
-                "Postal": "90210",
-                "City": "Some Town"
-            }
-        },
-        {
-            "type": "createUpdateData",
-            "preCommit": "false",
-            "postCommit": "false",
-            "serviceName": "CreateUpdateBPLocation",
-            "table": "C_BPartner_Location",
-            "action": "CreateUpdate",
-            "values" : {
-                "C_BPartner_ID": "@C_BPartner.C_BPartner_ID",
-                "C_Location_ID": "@C_Location.C_Location_ID",
-                "IsShipTo": "Y",
-                "IsBillTo": "Y",
-            }
-        },
-        {
-            "type": "createUpdateData",
-            "preCommit": "false",
-            "postCommit": "false",
-            "serviceName": "CreateUpdateUser",
-            "table": "AD_User",
-            "action": "CreateUpdate",
-            "values" : {
-                "C_BPartner_ID": "@C_BPartner.C_BPartner_ID",
-                "C_Location_ID": "@C_Location.C_Location_ID",
-                "IsShipTo": "Y",
-                "IsBillTo": "Y",
-            }
-        },
-        {
-            "type": "setDocAction",
-            "preCommit": "",
-            "postCommit": "",
-            "serviceName": "",
-            "table": "",
-            "idColumn": "Y",
-            "action": "CO"
-        }
-    ]
+   "settings":{
+      "urlEndpoint":"**ENDPOINT**",
+      "user":"WebService",
+      "password":"**PASSWORD**",
+      "language":"en_US",
+      "clientId":"11",
+      "roleId":"50004",
+      "orgId":"11",
+      "warehouseId":"103",
+      "stage":"9"
+   },
+   "call":[
+      {
+         "type":"createUpdateData",
+         "preCommit":"false",
+         "postCommit":"false",
+         "serviceName":"CreateBPartner1_0",
+         "table":"c_bpartner",
+         "action":"CreateUpdate",
+         "values":{
+            "Name":"**Joe Schmoe",
+            "email":"joe@schmoe.com",
+            "TaxID":"",
+            "IsVendor":"N",
+            "IsCustomer":"Y",
+            "IsTaxExempt":"N",
+            "C_BP_Group_ID":"104"
+         }
+      },
+      {
+         "type":"createUpdateData",
+         "preCommit":"false",
+         "postCommit":"false",
+         "serviceName":"CreateUpdateLocation",
+         "table":"C_Location",
+         "action":"CreateUpdate",
+         "values":{
+            "Address1":"100 Some Street",
+            "Address2":"1B",
+            "City":"Brooklyn",
+            "lookup":[
+               {
+                  "id":"C_Region_ID",
+                  "value":"NY"
+               },
+               {
+                  "id":"C_Country_ID",
+                  "value":"United States"
+               }
+            ],
+            "Postal":"11211"
+         }
+      },
+      {
+         "type":"createUpdateData",
+         "preCommit":"false",
+         "postCommit":"false",
+         "serviceName":"CreateUpdateBPLocation",
+         "table":"C_BPartner_Location",
+         "action":"CreateUpdate",
+         "values":{
+            "C_BPartner_ID":"@C_BPartner.C_BPartner_ID",
+            "C_Location_ID":"@C_Location.C_Location_ID",
+            "IsShipTo":"Y",
+            "IsBillTo":"Y"
+         }
+      },
+      {
+         "type":"createUpdateData",
+         "preCommit":"true",
+         "postCommit":"false",
+         "serviceName":"CreateUpdateUser",
+         "table":"AD_User",
+         "action":"CreateUpdate",
+         "values":{
+            "Name":"Joe Schmoe",
+            "C_BPartner_ID":"@C_BPartner.C_BPartner_ID",
+            "EMail":"joe@schmoe.com",
+            "C_BPartner_Location_ID":"@C_BPartner_Location.C_BPartner_Location_ID"
+         }
+      },
+      {
+         "type":"createUpdateData",
+         "preCommit":"false",
+         "postCommit":"false",
+         "serviceName":"CreateOrderRecord",
+         "table":"C_Order",
+         "action":"CreateUpdate",
+         "values":{
+            "M_Warehouse_ID":"1000001",
+            "AD_User_ID":"@AD_User.AD_User_ID",
+            "C_BPartner_ID":"@C_BPartner.C_BPartner_ID",
+            "C_DocTypeTarget_ID":"132",
+            "FreightCostRule":"I",
+            "DocumentNo":"50000000"
+         }
+      },
+      {
+         "type":"createUpdateData",
+         "preCommit":"false",
+         "postCommit":"false",
+         "serviceName":"CreateOrderRecord",
+         "table":"C_Order",
+         "action":"CreateUpdate",
+         "values":{
+            "DocumentNo":"50000000",
+            "M_PriceList_ID":"100"
+         }
+      },
+      {
+         "type":"createUpdateData",
+         "preCommit":"false",
+         "postCommit":"false",
+         "serviceName":"CreateOrderLine",
+         "table":"C_OrderLine",
+         "action":"CreateUpdate",
+         "values":{
+            "AD_Org_ID":"11",
+            "AD_Client_ID":"11",
+            "C_Order_ID":"@C_Order.C_Order_ID",
+            "QtyEntered":"1",
+            "QtyOrdered":"1",
+            "Line":"10",
+            "PriceEntered":"108",
+            "PriceActual":"108",
+            "lookup":[
+               {
+                  "id":"M_Product_ID",
+                  "value":"1000015"
+               }
+            ]
+         }
+      },
+      {
+         "type":"createUpdateData",
+         "preCommit":"false",
+         "postCommit":"false",
+         "serviceName":"CreateOrderLine",
+         "table":"C_OrderLine",
+         "action":"CreateUpdate",
+         "values":{
+            "AD_Org_ID":"11",
+            "AD_Client_ID":"11",
+            "C_Order_ID":"@C_Order.C_Order_ID",
+            "QtyEntered":"1",
+            "QtyOrdered":"1",
+            "Line":"20",
+            "PriceEntered":"42.13",
+            "PriceActual":"42.13",
+            "lookup":[
+               {
+                  "id":"M_Product_ID",
+                  "value":"1000016"
+               }
+            ]
+         }
+      },
+      {
+         "type":"setDocAction",
+         "preCommit":"true",
+         "postCommit":"true",
+         "serviceName":"UpdateOrderStatus",
+         "table":"C_Order",
+         "idColumn":"C_Order_ID",
+         "action":"CO"
+      }
+   ]
 }
 ```
 
