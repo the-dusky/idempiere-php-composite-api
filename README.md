@@ -10,23 +10,47 @@ To install use composer:
 ```shell
 composer require the-dusky/idempiere-php-composite-api
 
-composer install
+composer
+
 ```
 
-To use:
+Make Call:
 
 ```PHP
     use  IdempierePhpCompositeApi\IdApi;
 
     $IdApi = new IdApi();
 
-    $IdApi->build_request($json);
+    $IdApi->build_request($json_or_array);
 
-    $IdApi->build_request($additional_json, true);
+    $IdApi->build_request($additional_json_or_array, true);
 
     $IdApi->make_request();
 
-    $response = json_decode($IdApi->get_response(), true);
+    $IdApi->parse_response();
+
+```
+
+Available Properties:
+
+```PHP
+
+   $json_request = $IdApi->get_json_request();
+
+   $array_request = $IdApi->get_json_request();
+
+   $xml_soap_request = $IdApi->get_xml_request();
+
+   $xml_soap_response = $IdApi->get_xml_response();
+
+   $raw_json_response = $IdApi->get_raw_json_response();
+
+   $raw_array_response = $IdApi->get_raw_array_response();
+
+   $parsed_array_response = $IdApi->get_array_response();
+
+   $parsed_json_response = $IdApi->get_json_response();
+
 ```
 
 example json:
