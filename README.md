@@ -8,6 +8,7 @@ request_params can be sent in as json or an associative php array.
 To install use composer:
 
 ```shell
+
 composer require the-dusky/idempiere-php-composite-api
 
 composer
@@ -17,6 +18,7 @@ composer
 Make Call:
 
 ```PHP
+
     use  IdempierePhpCompositeApi\IdApi;
 
     $IdApi = new IdApi();
@@ -268,13 +270,13 @@ example json:
                                {
                                   "@attributes":{
                                      "column":"Address1",
-                                     "value":"390 Wythe Avenue"
+                                     "value":"Some Street"
                                   }
                                },
                                {
                                   "@attributes":{
                                      "column":"Address2",
-                                     "value":"5E"
+                                     "value":"1B"
                                   }
                                },
                                {
@@ -441,8 +443,8 @@ example json:
               {
                  "RecordID":"1006750",
                  "OutputFields":{
-                    "Address1":"390 Wythe Avenue",
-                    "Address2":"5E",
+                    "Address1":"Some Street",
+                    "Address2":"1B",
                     "C_City_ID":"NULL",
                     "C_Country_ID":"100",
                     "C_Location_ID":"1006750",
@@ -510,6 +512,7 @@ example json:
 ```
 
 ```xml
+
 <?xml version="1.0" encoding="UTF-8"?>
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:_0="http://idempiere.org/ADInterface/1_0">
    <soapenv:Header />
@@ -781,4 +784,6 @@ example json:
       </_0:compositeOperation>
    </soapenv:Body>
 </soapenv:Envelope>
+
+
 ```
