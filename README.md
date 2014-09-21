@@ -35,21 +35,27 @@ Available Properties:
 
 ```PHP
 
-   $json_request = $IdApi->get_json_request();
+    //JSON
 
-   $array_request = $IdApi->get_json_request();
+        $json_request = $IdApi->get_json_request();
 
-   $xml_soap_request = $IdApi->get_xml_request();
+        $raw_json_response = $IdApi->get_raw_json_response();
 
-   $xml_soap_response = $IdApi->get_xml_response();
+        $parsed_json_response = $IdApi->get_json_response();
 
-   $raw_json_response = $IdApi->get_raw_json_response();
+    //ARRAY
 
-   $raw_array_response = $IdApi->get_raw_array_response();
+        $array_request = $IdApi->get_array_request();
 
-   $parsed_array_response = $IdApi->get_array_response();
+        $raw_array_response = $IdApi->get_raw_array_response();
 
-   $parsed_json_response = $IdApi->get_json_response();
+        $parsed_array_response = $IdApi->get_array_response();
+
+    //XML
+
+        $xml_soap_request = $IdApi->get_xml_request();
+
+        $xml_soap_response = $IdApi->get_xml_response();
 
 ```
 
