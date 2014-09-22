@@ -29,8 +29,6 @@ Make Call:
 
     $IdApi->make_request();
 
-    $IdApi->parse_response();
-
 ```
 
 Available Properties:
@@ -433,67 +431,114 @@ example json:
     //PARSED RESPONSE
 
         {
+           "Summary":{
+              "bpartner_id":"1000000",
+              "location_id":[
+                 "1006752",
+                 "1006751"
+              ],
+              "bp_location_id":[
+                 "1006576",
+                 "1006579"
+              ],
+              "user_id":"1000000",
+              "order_id":"1007806",
+              "order_update":"1007806",
+              "orderline_id":[
+                  "1039507",
+                  "1039508"
+              ]
+           },
            "Response":[
               {
+                 "serviceName":"CreateBPartner1_0",
                  "RecordID":"1000000",
                  "OutputFields":{
                     "C_BPartner_ID":"1000000"
                  }
               },
               {
-                 "RecordID":"1006750",
+                 "serviceName":"CreateUpdateLocation",
+                 "RecordID":"1006752",
                  "OutputFields":{
-                    "Address1":"Some Street",
-                    "Address2":"1B",
+                    "Address1":"390 Wythe Avenue",
+                    "Address2":"#1D",
                     "C_City_ID":"NULL",
                     "C_Country_ID":"100",
-                    "C_Location_ID":"1006750",
+                    "C_Location_ID":"1006752",
                     "C_Region_ID":"108"
                  }
               },
               {
-                 "RecordID":"1006580",
+                 "serviceName":"CreateUpdateBPLocation",
+                 "RecordID":"1006576",
                  "OutputFields":{
-                    "C_BPartner_Location_ID":"1006580"
+                    "C_BPartner_Location_ID":"1006576"
                  }
               },
               {
+                 "serviceName":"CreateUpdateUser",
                  "RecordID":"1000000",
                  "OutputFields":{
                     "AD_User_ID":"1000000"
                  }
               },
               {
-                 "RecordID":"1007791",
+                 "serviceName":"CreateUpdateLocation",
+                 "RecordID":"1006751",
                  "OutputFields":{
-                    "C_Order_ID":"1007791",
-                    "DocumentNo":"121973"
+                    "Address1":"109 South 6th Street",
+                    "Address2":"#2",
+                    "C_City_ID":"NULL",
+                    "C_Country_ID":"100",
+                    "C_Location_ID":"1006751",
+                    "C_Region_ID":"108"
                  }
               },
               {
-                 "RecordID":"1007791",
+                 "serviceName":"CreateUpdateBPLocation",
+                 "RecordID":"1006579",
                  "OutputFields":{
-                    "C_Order_ID":"1007791",
-                    "DocumentNo":"121973"
+                    "C_BPartner_Location_ID":"1006579"
                  }
               },
               {
-                 "RecordID":"1039473",
+                 "serviceName":"CreateOrderRecord",
+                 "RecordID":"1007806",
                  "OutputFields":{
-                    "C_OrderLine_ID":"1039473"
+                    "C_Order_ID":"1007806",
+                    "DocumentNo":"122014"
                  }
               },
               {
-                 "RecordID":"1039474",
+                 "serviceName":"CreateOrderRecord",
+                 "RecordID":"1007806",
                  "OutputFields":{
-                    "C_OrderLine_ID":"1039474"
+                    "C_Order_ID":"1007806",
+                    "DocumentNo":"122014"
                  }
               },
               {
-                 "RecordID":"1007791",
+                 "serviceName":"CreateOrderLine",
+                 "RecordID":"1039507",
+                 "OutputFields":{
+                    "C_OrderLine_ID":"1039507"
+                 }
+              },
+              {
+                 "serviceName":"CreateOrderLine",
+                 "RecordID":"1039508",
+                 "OutputFields":{
+                    "C_OrderLine_ID":"1039508"
+                 }
+              },
+              {
+                 "serviceName":"UpdateOrderStatus",
+                 "RecordID":"1007806",
                  "IsError":"false"
               },
               {
+                 "serviceName":"GenerateInvoice",
                  "IsError":"false",
                  "RunProcessResponse":{
                     "@attributes":{
