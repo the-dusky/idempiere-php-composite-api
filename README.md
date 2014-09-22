@@ -243,7 +243,7 @@ example json:
                "lookup":[
                   {
                      "id":"M_Product_ID",
-                     "value":100025"
+                     "value":"100025"
                   }
                ]
             }
@@ -268,7 +268,7 @@ example json:
                "lookup":[
                   {
                      "id":"M_Product_ID",
-                     "value":"12569"
+                     "value":"1255669"
                   }
                ]
             }
