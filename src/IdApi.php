@@ -117,13 +117,22 @@ class IdApi {
                     $new_array[$key]['IsError'] = $value['@attributes']['IsError'];
                 }
 
+                if(isset($value['@attributes']['IsRolledBack'])) {
+                    $new_array[$key]['IsRolledBack'] = $value['@attributes']['IsRolledBack'];
+                }
+
                 if(isset($value['RunProcessResponse'])) {
                     $new_array[$key]['RunProcessResponse'] = $value['RunProcessResponse'];
                 }
+
+                if(isset($value['Error'])) {
+                    $new_array[$key]['Error'] = $value['Error'];
+                    $error = $this->array_request['call'][$key]['serviceName'] . " - " . $value['Error'];
+                }
             }
         }
-        if(isset($new_array['IsError'])) {
-            return array('Error' => true, 'Response' => $new_array);
+        if(isset($error)) {
+            return array('Summary' => $this->get_response_summary($formatted_array), 'Response' => $new_array, 'Error' => $error);
         } else {
             return array('Summary' => $this->get_response_summary($formatted_array), 'Response' => $new_array);
         }
