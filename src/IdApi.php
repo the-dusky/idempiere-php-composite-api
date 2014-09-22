@@ -80,11 +80,14 @@ class IdApi {
 
     public function reformat_array_response() {
         $new_array = array();
+        $summary_array = array();
         $formatted_array = $this->raw_array_response['soapBody']['ns1compositeOperationResponse']['CompositeResponses']['CompositeResponse'];
         foreach($formatted_array['StandardResponse'] as $key => $value) {
-            if(isset($value['@attributes']['RecordID'])) {
-                $new_array[$key]['RecordID'] = $value['@attributes']['RecordID'];
-            }
+
+            $new_array = $this->parse_serviceName($new_array, $key);
+
+            $new_array = $this->parse_RecordID($new_array, $key, $value);
+
             if(isset($value['outputFields'])) {
                 foreach($value['outputFields'] as $value2) {
                     if (isset($value2['@attributes'])) {
@@ -104,14 +107,48 @@ class IdApi {
                     }
                 }
             }
+
             if(isset($value['@attributes']['IsError'])) {
                 $new_array[$key]['IsError'] = $value['@attributes']['IsError'];
             }
+
             if(isset($value['RunProcessResponse'])) {
                 $new_array[$key]['RunProcessResponse'] = $value['RunProcessResponse'];
             }
         }
-        return array('Response' => $new_array);
+        return array('Summary' => $this->get_response_summary($formatted_array), 'Response' => $new_array);
+    }
+
+    public function get_response_summary($formatted_array) {
+        foreach($formatted_array['StandardResponse'] as $key => $value) {
+            if(isset($this->array_request['call'][$key]['name']) && isset($value['@attributes']['RecordID'])) {
+                if(isset($summary_array[$this->array_request['call'][$key]['name']])) {
+                    if(is_array($summary_array[$this->array_request['call'][$key]['name']])) {
+                        $summary_array[$this->array_request['call'][$key]['name']][] = $value['@attributes']['RecordID'];
+                    } else {
+                        $summary_array[$this->array_request['call'][$key]['name']] = array($summary_array[$this->array_request['call'][$key]['name']], $value['@attributes']['RecordID']);
+                    }
+
+                } else {
+                    $summary_array[$this->array_request['call'][$key]['name']] = $value['@attributes']['RecordID'];
+                }
+            }
+        }
+        return $summary_array;
+    }
+
+    public function parse_serviceName($new_array, $key) {
+        if(isset($this->array_request['call'][$key]['serviceName'])) {
+            $new_array[$key]['serviceName'] = $this->array_request['call'][$key]['serviceName'];
+        }
+        return $new_array;
+    }
+
+    public function parse_RecordID($new_array, $key, $value) {
+        if(isset($value['@attributes']['RecordID'])) {
+            $new_array[$key]['RecordID'] = $value['@attributes']['RecordID'];
+        }
+        return $new_array;
     }
 
     public function validate_response() {
