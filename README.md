@@ -65,7 +65,7 @@ example json:
 
 ```JSON
 
-    //REQUEST
+    /*REQUEST*/
 
         {
            "settings":{
