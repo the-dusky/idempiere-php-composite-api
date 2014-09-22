@@ -83,40 +83,50 @@ class IdApi {
         $summary_array = array();
         $formatted_array = $this->raw_array_response['soapBody']['ns1compositeOperationResponse']['CompositeResponses']['CompositeResponse'];
         foreach($formatted_array['StandardResponse'] as $key => $value) {
+            if(isset($value['IsError'])) {
+                $new_array['IsError'] = $value['IsError'];
+                $new_array['IsRolledBack'] = $value['IsRolledBack'];
+                $new_array['Error'] = $formatted_array['StandardResponse']['Error'];
+                break;
+            } else {
+                $new_array = $this->parse_serviceName($new_array, $key);
 
-            $new_array = $this->parse_serviceName($new_array, $key);
+                $new_array = $this->parse_RecordID($new_array, $key, $value);
 
-            $new_array = $this->parse_RecordID($new_array, $key, $value);
-
-            if(isset($value['outputFields'])) {
-                foreach($value['outputFields'] as $value2) {
-                    if (isset($value2['@attributes'])) {
-                        if(isset($value2['@attributes']['value'])) {
-                            $new_array[$key]['OutputFields'][$value2['@attributes']['column']] = $value2['@attributes']['value'];
-                        } else {
-                            $new_array[$key]['OutputFields'][$value2['@attributes']['column']] = 'NULL';
-                        }
-                    } else {
-                        foreach($value2 as $value3) {
-                            if(isset($value3['@attributes']['value'])) {
-                                $new_array[$key]['OutputFields'][$value3['@attributes']['column']] = $value3['@attributes']['value'];
+                if(isset($value['outputFields'])) {
+                    foreach($value['outputFields'] as $value2) {
+                        if(isset($value2['@attributes'])) {
+                            if(isset($value2['@attributes']['value'])) {
+                                $new_array[$key]['OutputFields'][$value2['@attributes']['column']] = $value2['@attributes']['value'];
                             } else {
-                                $new_array[$key]['OutputFields'][$value3['@attributes']['column']] = 'NULL';
+                                $new_array[$key]['OutputFields'][$value2['@attributes']['column']] = 'NULL';
+                            }
+                        } else {
+                            foreach($value2 as $value3) {
+                                if(isset($value3['@attributes']['value'])) {
+                                    $new_array[$key]['OutputFields'][$value3['@attributes']['column']] = $value3['@attributes']['value'];
+                                } else {
+                                    $new_array[$key]['OutputFields'][$value3['@attributes']['column']] = 'NULL';
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            if(isset($value['@attributes']['IsError'])) {
-                $new_array[$key]['IsError'] = $value['@attributes']['IsError'];
-            }
+                if(isset($value['@attributes']['IsError'])) {
+                    $new_array[$key]['IsError'] = $value['@attributes']['IsError'];
+                }
 
-            if(isset($value['RunProcessResponse'])) {
-                $new_array[$key]['RunProcessResponse'] = $value['RunProcessResponse'];
+                if(isset($value['RunProcessResponse'])) {
+                    $new_array[$key]['RunProcessResponse'] = $value['RunProcessResponse'];
+                }
             }
         }
-        return array('Summary' => $this->get_response_summary($formatted_array), 'Response' => $new_array);
+        if(isset($new_array['IsError'])) {
+            return array('Error' => true, 'Response' => $new_array);
+        } else {
+            return array('Summary' => $this->get_response_summary($formatted_array), 'Response' => $new_array);
+        }
     }
 
     public function get_response_summary($formatted_array) {
