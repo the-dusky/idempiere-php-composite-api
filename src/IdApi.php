@@ -19,10 +19,6 @@ class IdApi {
         $this->response = '';
     }
 
-    public function test() {
-        echo "IT WORKS";
-    }
-
     public function get_json_request() {
         return $this->json_request;
     }
