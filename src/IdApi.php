@@ -81,8 +81,12 @@ class IdApi {
         foreach($formatted_array['StandardResponse'] as $key => $value) {
             if(isset($value['IsError'])) {
                 $new_array['IsError'] = $value['IsError'];
-                $new_array['IsRolledBack'] = $value['IsRolledBack'];
-                $new_array['Error'] = $formatted_array['StandardResponse']['Error'];
+                if(isset($value['IsRolledBack'])) {
+                    $new_array['IsRolledBack'] = $value['IsRolledBack'];
+                }
+                if(isset($formatted_array['StandardResponse']['Error'])) {
+                    $new_array['Error'] = $formatted_array['StandardResponse']['Error'];
+                }
                 break;
             } else {
                 $new_array = $this->parse_serviceName($new_array, $key);
@@ -135,6 +139,7 @@ class IdApi {
     }
 
     public function get_response_summary($formatted_array) {
+        $summary_array = array();
         foreach($formatted_array['StandardResponse'] as $key => $value) {
             if(isset($this->array_request['call'][$key]['name']) && isset($value['@attributes']['RecordID'])) {
                 if(isset($summary_array[$this->array_request['call'][$key]['name']])) {
