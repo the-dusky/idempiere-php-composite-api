@@ -1,7 +1,7 @@
 {
     "name": "the-dusky/idempiere-php-composite-api",
     "description": "A php wrapper for the composite api in Idempiere",
-    "license": "The MIT License (MIT)",
+    "license": "MIT License",
     "authors": [
         {
             "name": "Sandy Corsillo",
