@@ -23,16 +23,16 @@ class IdApi {
         return $this->json_request;
     }
 
+    public function get_json_response() {
+        return $this->json_response;
+    }
+
     public function get_array_request() {
         return $this->array_request;
     }
 
-    public function get_xml_request() {
-        return $this->xml_request;
-    }
-
-    public function get_xml_response() {
-        return $this->xml_response;
+    public function get_array_response() {
+        return $this->array_response;
     }
 
     public function get_raw_array_response() {
@@ -43,12 +43,12 @@ class IdApi {
         return $this->raw_json_response;
     }
 
-    public function get_array_response() {
-        return $this->array_response;
+    public function get_xml_request() {
+        return $this->xml_request;
     }
 
-    public function get_json_response() {
-        return $this->json_response;
+    public function get_xml_response() {
+        return $this->xml_response;
     }
 
     public function make_request() {
